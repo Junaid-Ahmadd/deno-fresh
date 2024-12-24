@@ -1,5 +1,9 @@
-node_modules
-.deno
 .git
+.github
+.gitignore
+README.md
 .env
+*.log
+node_modules/
+dist/
 .DS_Store
