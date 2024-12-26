@@ -4,6 +4,7 @@
 
 import * as $_app from "./routes/_app.tsx";
 import * as $api_crawl from "./routes/api/crawl.ts";
+import * as $api_screenshots from "./routes/api/screenshots.ts";
 import * as $index from "./routes/index.tsx";
 import * as $WebCrawler from "./islands/WebCrawler.tsx";
 import type { Manifest } from "$fresh/server.ts";
@@ -12,6 +13,7 @@ const manifest = {
   routes: {
     "./routes/_app.tsx": $_app,
     "./routes/api/crawl.ts": $api_crawl,
+    "./routes/api/screenshots.ts": $api_screenshots,
     "./routes/index.tsx": $index,
   },
   islands: {

@@ -1,5 +1,25 @@
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { config } from "https://deno.land/x/dotenv/mod.ts";
 
+const { APIFY_API_KEY, APIFY_PUPPETEER_URL } = config();
+
+export async function takeScreenshot(url: string): Promise<string> {
+    const response = await fetch(APIFY_PUPPETEER_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${APIFY_API_KEY}`,
+        },
+        body: JSON.stringify({ url }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to take screenshot: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.result; // Adjust based on the actual response structure
+}
 export default class CrawlerService {
   private visitedUrls = new Set<string>();
   private queue: string[] = [];

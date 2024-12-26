@@ -1,17 +1,23 @@
 import { useState } from "preact/hooks";
 
+interface Screenshot {
+  url: string;
+  imageUrl: string;
+}
+
 export default function WebCrawler() {
   const [url, setUrl] = useState("");
   const [crawledLinks, setCrawledLinks] = useState<string[]>([]);
+  const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function submitUrl() {
     if (!url) return;
-
     setIsProcessing(true);
     setError(null);
     setCrawledLinks([]);
+    setScreenshots([]);
 
     try {
       const response = await fetch("/api/crawl", {
@@ -41,9 +47,9 @@ export default function WebCrawler() {
     <main class="container mx-auto p-4 bg-white shadow rounded-lg">
       <div class="text-center mb-6">
         <h1 class="text-4xl font-bold text-blue-600">Web Crawler</h1>
-        <p class="text-gray-600">Discover links on a website effortlessly.</p>
+        <p class="text-gray-600">Discover and screenshot links on a website.</p>
       </div>
-
+      
       <div class="bg-blue-500 text-white p-4 rounded-lg shadow">
         <div class="flex gap-4 items-center">
           <input
@@ -75,13 +81,27 @@ export default function WebCrawler() {
       {crawledLinks.length > 0 && (
         <div class="mt-4 bg-gray-100 p-4 rounded-lg shadow">
           <h2 class="text-2xl font-bold mb-4">Discovered Links ({crawledLinks.length})</h2>
-          <ul class="space-y-2">
+          <div class="space-y-4">
             {crawledLinks.map((link) => (
-              <li key={link} class="flex justify-between items-center border-b pb-2">
-                <span class="text-blue-600">{link}</span>
-              </li>
+              <div key={link} class="border-b pb-4">
+                <div class="flex justify-between items-center">
+                  <a href={link} target="_blank" rel="noopener noreferrer" 
+                     class="text-blue-600 hover:underline">
+                    {link}
+                  </a>
+                </div>
+                {screenshots.find(s => s.url === link) && (
+                  <div class="mt-2">
+                    <img 
+                      src={screenshots.find(s => s.url === link)?.imageUrl} 
+                      alt={`Screenshot of ${link}`}
+                      class="w-full rounded-lg shadow-md"
+                    />
+                  </div>
+                )}
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </main>
