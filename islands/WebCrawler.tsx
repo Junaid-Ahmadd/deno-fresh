@@ -50,6 +50,8 @@ export default function WebCrawler() {
         <p class="text-gray-600">Discover and screenshot links on a website.</p>
       </div>
       
+      
+
       <div class="bg-blue-500 text-white p-4 rounded-lg shadow">
         <div class="flex gap-4 items-center">
           <input
